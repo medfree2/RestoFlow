@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 
-const PRODUCTS_API = "http://localhost:5000/api/products";
-const ORDERS_API = "http://localhost:5000/api/orders";
-const CUSTOMERS_API = "http://localhost:5000/api/customers";
+const PRODUCTS_API = `${API_BASE_URL}/api/products`;
+const ORDERS_API = `${API_BASE_URL}/api/orders`;
+const CUSTOMERS_API = `${API_BASE_URL}/api/customers`;
 
 const statusStyles = {
   "En attente": "bg-blue-100 text-blue-700",

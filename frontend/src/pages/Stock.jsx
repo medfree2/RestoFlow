@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 
-const PRODUCTS_API = "http://localhost:5000/api/products";
-const MOVEMENTS_API = "http://localhost:5000/api/stock-movements";
+const PRODUCTS_API = `${API_BASE_URL}/api/products`;
+const MOVEMENTS_API = `${API_BASE_URL}/api/stock-movements`;
 
 function Stock() {
   const { authFetch, logout } = useAuth();

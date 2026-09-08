@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const CUSTOMERS_API =
-  "http://localhost:5000/api/customers";
+  `${API_BASE_URL}/api/customers`;
 
 const RECOMMENDATIONS_API =
-  "http://localhost:5000/api/ai/recommendations";
+  `${API_BASE_URL}/api/ai/recommendations`;
 
 function Recommendations() {
   const { authFetch, logout } = useAuth();

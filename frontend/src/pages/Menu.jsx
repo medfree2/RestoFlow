@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = `${API_BASE_URL}/api/products`;
 const AI_API =
-  "http://localhost:5000/api/ai/menu-description";
+  `${API_BASE_URL}/api/ai/menu-description`;
 
 const DAILY_MENU_API =
-  "http://localhost:5000/api/ai/daily-menu";
+  `${API_BASE_URL}/api/ai/daily-menu`;
 
 function Menu() {
   const { authFetch, logout } = useAuth();

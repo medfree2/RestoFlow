@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -16,13 +17,13 @@ import {
   Bar,
 } from "recharts";
 
-const API_URL = "http://localhost:5000/api/dashboard";
+const API_URL = `${API_BASE_URL}/api/dashboard`;
 const FORECAST_API =
-  "http://localhost:5000/api/ai/sales-forecast";
+  `${API_BASE_URL}/api/ai/sales-forecast`;
 const DAILY_MENU_API =
-  "http://localhost:5000/api/ai/daily-menu";
+  `${API_BASE_URL}/api/ai/daily-menu`;
 const RESERVATIONS_API =
-  "http://localhost:5000/api/reservations";
+  `${API_BASE_URL}/api/reservations`;
 
 function Dashboard() {
   const { authFetch, logout } = useAuth();

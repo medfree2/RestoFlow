@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import SalesForecast from "./SalesForecast";
+import { API_BASE_URL } from "../config/api";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -20,7 +21,7 @@ import {
   Bar,
 } from "recharts";
 
-const REPORTS_API = "http://localhost:5000/api/reports";
+const REPORTS_API = `${API_BASE_URL}/api/reports`;
 
 function RapportsContent() {
   const { authFetch, logout } = useAuth();

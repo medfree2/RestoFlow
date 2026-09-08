@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 
 const RESERVATIONS_API =
-  "http://localhost:5000/api/reservations";
+  `${API_BASE_URL}/api/reservations`;
 
 const CUSTOMERS_API =
-  "http://localhost:5000/api/customers";
+  `${API_BASE_URL}/api/customers`;
 
 const statusStyles = {
   "En attente": "bg-amber-100 text-amber-700",

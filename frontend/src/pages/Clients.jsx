@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 import Recommendations from "./Recommendations";
 
-const API_URL = "http://localhost:5000/api/customers";
+const API_URL = `${API_BASE_URL}/api/customers`;
 
 function ClientsContent() {
   const { authFetch, logout } = useAuth();

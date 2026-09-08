@@ -1,11 +1,12 @@
+import { API_BASE_URL } from "../config/api";
+
 import {
   useCallback,
   useEffect,
   useState,
 } from "react";
 
-const API_URL =
-  "http://localhost:5000";
+const API_URL = API_BASE_URL;
 
 function DailyMenu() {
   const [data, setData] =

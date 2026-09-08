@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5000";
+const API_URL = API_BASE_URL;
 
 function SalesForecast() {
   const [data, setData] = useState(null);
