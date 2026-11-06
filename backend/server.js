@@ -42,69 +42,92 @@ if (!process.env.OPENROUTER_API_KEY) {
 // MONGODB
 // ======================================================
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(async () => {
-    console.log("MongoDB connected successfully");
+let databaseReady;
 
-    // ==================================================
-    // DEFAULT ADMIN ACCOUNT
-    // Login: admin
-    // Password: admin
-    // Stored email remains admin@restaurant.com
-    // ==================================================
+function connectDatabase() {
+  if (!databaseReady) {
+    databaseReady = mongoose.connect(process.env.MONGODB_URI)
+      .then(initializeDatabase)
+      .catch((error) => {
+        databaseReady = undefined;
+        throw error;
+      });
+  }
 
-    try {
-      const adminEmail = "admin@restaurant.com";
-      const adminPassword = "admin";
+  return databaseReady;
+}
 
-      let adminUser = await User.findOne({
-        $or: [
-          { email: adminEmail },
-          { role: "admin" },
-        ],
+async function initializeDatabase() {
+  console.log("MongoDB connected successfully");
+
+  // ==================================================
+  // DEFAULT ADMIN ACCOUNT
+  // Login: admin
+  // Password: admin
+  // Stored email remains admin@restaurant.com
+  // ==================================================
+
+  try {
+    const adminEmail = "admin@restaurant.com";
+    const adminPassword = "admin";
+
+    let adminUser = await User.findOne({
+      $or: [
+        { email: adminEmail },
+        { role: "admin" },
+      ],
+    });
+
+    const hashedPassword = await bcrypt.hash(
+      adminPassword,
+      12
+    );
+
+    if (!adminUser) {
+      adminUser = await User.create({
+        name: "Admin",
+        email: adminEmail,
+        password: hashedPassword,
+        role: "admin",
+        active: true,
       });
 
-      const hashedPassword = await bcrypt.hash(
-        adminPassword,
-        12
+      console.log(
+        "✅ Default admin account created: admin / admin"
       );
+    } else {
+      adminUser.name = "Admin";
+      adminUser.email = adminEmail;
+      adminUser.password = hashedPassword;
+      adminUser.role = "admin";
+      adminUser.active = true;
 
-      if (!adminUser) {
-        adminUser = await User.create({
-          name: "Admin",
-          email: adminEmail,
-          password: hashedPassword,
-          role: "admin",
-          active: true,
-        });
+      await adminUser.save();
 
-        console.log(
-          "✅ Default admin account created: admin / admin"
-        );
-      } else {
-        adminUser.name = "Admin";
-        adminUser.email = adminEmail;
-        adminUser.password = hashedPassword;
-        adminUser.role = "admin";
-        adminUser.active = true;
-
-        await adminUser.save();
-
-        console.log(
-          "✅ Admin credentials synchronized: admin / admin"
-        );
-      }
-    } catch (adminError) {
-      console.error(
-        "❌ Default admin setup error:",
-        adminError.message
+      console.log(
+        "✅ Admin credentials synchronized: admin / admin"
       );
     }
-  })
-  .catch((error) => {
+  } catch (adminError) {
+    console.error(
+      "❌ Default admin setup error:",
+      adminError.message
+    );
+  }
+}
+
+app.use("/api", async (req, res, next) => {
+  try {
+    await connectDatabase();
+  } catch (error) {
     console.error("MongoDB connection error:", error.message);
-  });
+    return res.status(503).json({
+      message: "Base de données temporairement indisponible",
+    });
+  }
+
+  next();
+});
 
 // ======================================================
 // HELPERS
